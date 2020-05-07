@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "lib": ["es2015", "es2017", "dom"],
-    "removeComments": true,
+    "removeComments": false,
     "allowSyntheticDefaultImports": false,
     "baseUrl": "./",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es6",
     "jsx": "react",
+    "moduleResolution": "node",
     "paths": {
       "components/*": ["src/components/*"]
     }

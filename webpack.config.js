@@ -25,6 +25,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/dist'),
     filename: '[name].[contenthash].js',
+    chunkFilename: '[name].bundle.js',
   },
   devtool: 'source-map',
   resolve: {
@@ -52,6 +53,9 @@ module.exports = {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '/',
+            },
           },
           'css-loader',
           'sass-loader',
@@ -75,7 +79,7 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: '/fonts',
+              outputPath: 'assets/fonts',
             },
           },
         ],
