@@ -6,9 +6,10 @@
   "author": "Jose G Vargas",
   "license": "MIT",
   "scripts": {
+    "prebuild": "rm -r dist",
     "build": "webpack --mode production",
+    "postbuild": "webpack --profile --json > dist/stats.json",
     "start": "webpack-dev-server --mode development",
-    "generate-stats": "webpack --profile --json > ./dist/stats.json",
     "analyze-bundle": "webpack-bundle-analyzer dist/stats.json"
   },
   "dependencies": {
