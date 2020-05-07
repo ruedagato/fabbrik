@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 
 module.exports = {
   devServer: {
@@ -26,7 +29,7 @@ module.exports = {
   devtool: 'source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
-    modules: [path.resolve('./src'), path.resolve('./node_modules')],
+    modules: [path.resolve('src'), path.resolve('node_modules')],
   },
   module: {
     rules: [
@@ -44,12 +47,53 @@ module.exports = {
         test: /\.js$/,
         loader: 'source-map-loader',
       },
+      {
+        test: /\.(s*)css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          'css-loader',
+          'sass-loader',
+        ],
+      },
+      {
+        test: /\.(png|gif|jpg|webp|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/[hash].[ext]',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: '/fonts',
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
-    // new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'assets/[name].css',
+    }),
+    new CleanWebpackPlugin(),
+    new BundleAnalyzerPlugin({
+      openAnalyzer: false,
+      generateStatsFile: true,
+      analyzerMode: 'disabled',
+    }),
   ],
 };
