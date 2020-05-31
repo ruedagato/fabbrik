@@ -1,0 +1,22 @@
+.login-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding-top: 80px;
+  align-items: center;
+}
+
+.login-logo {
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: grid;
+  grid-template-columns: max-content;
+  row-gap: 10px;
+  padding: 30px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 6px 15px -7px #000000;
+}

@@ -1,9 +1,9 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+/// <reference path='./index.d.ts'/>
 
-import { Hello } from 'components/Hello';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import App from "./containers/App";
 
-ReactDOM.render(
-  <Hello compiler="TypeScript" framework="React" />,
-  document.getElementById('root')
-);
+import "assets/global.scss";
+
+ReactDOM.render(<App />, document.getElementById("root"));
