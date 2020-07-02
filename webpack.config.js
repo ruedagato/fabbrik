@@ -1,44 +1,45 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
 
 module.exports = {
   devServer: {
     historyApiFallback: true,
   },
-  entry: './src/index.tsx',
+  entry: "./src/index.tsx",
   optimization: {
-    runtimeChunk: 'single',
+    runtimeChunk: "single",
     splitChunks: {
-      chunks: 'all',
+      chunks: "all",
       maxInitialRequests: Infinity,
       minSize: 0,
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
+          name: "vendor",
           // name(module) {
           //   console.log(module.context);
           //   const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
           //   return `npm.${packageName.replace('@', '')}`;
           // },
-          chunks: 'all',
+          chunks: "all",
         },
       },
     },
   },
   output: {
-    path: path.join(__dirname, '/dist'),
-    filename: '[name].[contenthash].js',
-    chunkFilename: '[name].bundle.js',
+    path: path.join(__dirname, "/dist"),
+    filename: "[name].[contenthash].js",
+    chunkFilename: "[name].bundle.js",
   },
-  devtool: 'source-map',
+  devtool: "eval-cheap-module-source-map",
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
-    modules: [path.resolve('src'), path.resolve('node_modules')],
+    extensions: [".ts", ".tsx", ".js"],
+    modules: [path.resolve("src"), path.resolve("node_modules")],
   },
   module: {
     rules: [
@@ -48,13 +49,12 @@ module.exports = {
         use: [
           {
             loader: 'ts-loader',
-          },
+            options: {
+              transpileOnly: true,
+              experimentalWatchApi: true,
+            }
+          }
         ],
-      },
-      {
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: 'source-map-loader',
       },
       {
         test: /\.(s*)css$/,
@@ -62,20 +62,20 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '/',
+              publicPath: "/",
             },
           },
-          'css-loader',
-          'sass-loader',
+          "css-loader",
+          "sass-loader",
         ],
       },
       {
         test: /\.(png|gif|jpg|webp|svg)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
-              name: 'assets/[hash].[ext]',
+              name: "assets/[hash].[ext]",
             },
           },
         ],
@@ -84,10 +84,10 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
-              name: '[name].[ext]',
-              outputPath: 'assets/fonts',
+              name: "[name].[ext]",
+              outputPath: "assets/fonts",
             },
           },
         ],
@@ -96,16 +96,17 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: "./src/index.html",
     }),
     new MiniCssExtractPlugin({
-      filename: 'assets/[name].css',
+      filename: "assets/[name].css",
     }),
     new CleanWebpackPlugin(),
     new BundleAnalyzerPlugin({
       openAnalyzer: false,
       generateStatsFile: true,
-      analyzerMode: 'disabled',
+      analyzerMode: "disabled",
     }),
+    new ForkTsCheckerWebpackPlugin()
   ],
 };
