@@ -1,5 +1,9 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/functions";
+import { useHistory } from "react-router-dom";
 
 //ui material components
 import TextField from "@material-ui/core/TextField";
@@ -10,17 +14,34 @@ import logo from "assets/img/logo.svg";
 import "assets/login.scss";
 
 type FormInputs = {
-  user: string,
-  password: string
-}
+  user: string;
+  password: string;
+};
 
 const Login = () => {
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
   const { register, handleSubmit, errors } = useForm<FormInputs>();
-  const onSubmit = (data:FormInputs) => {
-    setLoading(true);
-    setLoading(false)
-  }
+  const history = useHistory();
+  const onSubmit = async (data: FormInputs) => {
+    let complete = false;
+    try {
+      setLoading(true);
+      const respond = await firebase.functions().httpsCallable("login")({
+        user: data.user,
+        password: data.password,
+      });
+      await firebase.auth().signInWithCustomToken(respond.data);
+      complete = true;
+    } catch ({ message }) {
+      setError(message);
+    } finally {
+      setLoading(false);
+      if (complete) {
+        history.push("/user");
+      }
+    }
+  };
   return (
     <div className="login-container">
       <form className="login-form" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
@@ -45,6 +66,7 @@ const Login = () => {
         <Button variant="contained" color="primary" type="submit" disabled={loading}>
           {loading ? <CircularProgress size={20} /> : "Entrar"}
         </Button>
+        <span>{error}</span>
       </form>
     </div>
   );

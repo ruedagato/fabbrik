@@ -12,11 +12,13 @@
 }
 
 .login-form {
+  width: 400px;
   display: grid;
-  grid-template-columns: max-content;
+  grid-template-columns: 1fr;
   row-gap: 10px;
   padding: 30px;
   border-radius: 10px;
   background: white;
   box-shadow: 0 6px 15px -7px #000000;
+  box-sizing: border-box;
 }
