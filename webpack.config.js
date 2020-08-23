@@ -3,8 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
   devServer: {
@@ -44,16 +43,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts(x?)$/,
+        test: /\.(tsx|ts|js)$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader',
+            loader: "ts-loader",
             options: {
               transpileOnly: true,
               experimentalWatchApi: true,
-            }
-          }
+            },
+          },
         ],
       },
       {
@@ -107,6 +106,6 @@ module.exports = {
       generateStatsFile: true,
       analyzerMode: "disabled",
     }),
-    new ForkTsCheckerWebpackPlugin()
+    new ForkTsCheckerWebpackPlugin(),
   ],
 };

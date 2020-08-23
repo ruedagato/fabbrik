@@ -26,8 +26,8 @@ const Users = () => {
     setOpen(true);
   };
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
   return (
     <React.Fragment>
       <Layout title="Lista de empleados">

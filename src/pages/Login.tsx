@@ -33,8 +33,12 @@ const Login = () => {
       });
       await firebase.auth().signInWithCustomToken(respond.data);
       complete = true;
-    } catch ({ message }) {
-      setError(message);
+    } catch ({ message, code }) {
+      if (code === "permission-denied") {
+        setError("Usuario o contraseña incorrecta");
+      } else {
+        setError(message);
+      }
     } finally {
       setLoading(false);
       if (complete) {
@@ -66,7 +70,7 @@ const Login = () => {
         <Button variant="contained" color="primary" type="submit" disabled={loading}>
           {loading ? <CircularProgress size={20} /> : "Entrar"}
         </Button>
-        <span>{error}</span>
+        <span className="login-err">{error}</span>
       </form>
     </div>
   );

@@ -1,5 +1,6 @@
 import * as React from "react";
 import loadable from "@loadable/component";
+import LoginGuard from "./LoginGuard";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { USERS } from "core/constants/path";
 
@@ -12,9 +13,11 @@ const Router = () => (
       <Route path="/login">
         <Login />
       </Route>
-      <Route path={USERS}>
+
+      <LoginGuard path={USERS}>
         <Users />
-      </Route>
+      </LoginGuard>
+
       <Route exact path="/">
         <Redirect to="/login" />
       </Route>
