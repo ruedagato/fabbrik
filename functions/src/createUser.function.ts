@@ -4,7 +4,7 @@ import * as crypto from "crypto";
 
 export const createUser = functions.https.onCall(async (data) => {
   const { user, password, company, name } = data;
-  const userNameRef = admin.database().ref(company).child("userName").child(user);
+  const userNameRef = admin.database().ref("userName").child(company).child(user);
   await checkUser(userNameRef, company);
   const hash = crypto.createHash("sha256");
   hash.update(`${user}:${password}`);
